@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
+@Table(indexes = [Index(columnList = "player1_id, player2_id", unique = true)])
 class Match(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long? = null,
     var happenedAt: LocalDateTime,

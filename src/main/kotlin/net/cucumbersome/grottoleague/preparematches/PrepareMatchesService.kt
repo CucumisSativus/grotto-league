@@ -11,31 +11,53 @@ class PrepareMatchesService(
 ) {
     fun planMatchesFromString(playerString: String) {
         val playerNames = playerString.split("\n").filter { it.isNotBlank() }
-        val players = playerNames.map { Player(name = it) }
 
-        if(players.isEmpty()) {
+        if(playerNames.isEmpty()) {
             throw IllegalArgumentException("No players provided")
         }
-        if(players.size != playerNames.toSet().size) {
+        if(playerNames.size != playerNames.toSet().size) {
             throw IllegalArgumentException("Duplicate player names provided")
         }
 
-        logger.info("Creating ${players.size} players")
-        playerRepository.saveAll(players)
-        val matches = players.flatMap { player1 ->
-            players.map { player2 -> Pair(player1, player2) }
-        }
+        val players = getAllPlayersAndInitializeIfNeeded(playerNames)
+        val currentMatches = plannedMatchRepository.findAll().toList()
+
+        val matches = eachAgainstOther(players)
             .filter { it.first != it.second }
-            .fold(emptyList<PlannedMatch>()) { acc, (player1, player2) ->
-                val count = acc.count { plannedMatchBetween(player1, player2, it) }
-                if (count == 0) {
-                    acc + PlannedMatch(player1 = player1, player2 = player2)
+            .fold(currentMatches) { acc, pair -> function(acc, pair.first, pair.second) }
+        logger.info("Scheduling ${matches.size} matches, new count: ${matches.size - currentMatches.size}, existing count: ${currentMatches.size}")
+        plannedMatchRepository.saveAll(matches)
+    }
+
+    private fun function(acc: List<PlannedMatch>, player1: Player, player2: Player): List<PlannedMatch> {
+        val count = acc.count { plannedMatchBetween(player1, player2, it) }
+        return if (count == 0) {
+            acc + PlannedMatch(player1 = player1, player2 = player2)
+        } else {
+            acc
+        }
+    }
+
+    private fun eachAgainstOther(players: List<Player>) =
+        players.flatMap { player1 ->
+            players.map { player2 ->
+                if (player1.name < player2.name) {
+                    Pair(player1, player2)
                 } else {
-                    acc
+                    Pair(player2, player1)
                 }
             }
-        logger.info("Creating ${matches.size} planned matches")
-        plannedMatchRepository.saveAll(matches)
+        }
+
+    private fun getAllPlayersAndInitializeIfNeeded(playerNames: List<String>): List<Player> {
+        val existingPlayers = playerRepository.findAllByNameIn(playerNames).toList()
+        val existingNames = existingPlayers.map { it.name }.toSet()
+        val newNames = playerNames.filter { !existingNames.contains(it) }
+        val newPlayers = newNames.map { Player(name = it) }
+        playerRepository.saveAll(newPlayers)
+        val players = newPlayers + existingPlayers
+        logger.info("Player count: ${players.size}, new: ${newPlayers.size}, existing: ${existingPlayers.size}")
+        return players
     }
 
     private fun plannedMatchBetween(player1: Player, player2: Player, plannedMatch: PlannedMatch): Boolean {

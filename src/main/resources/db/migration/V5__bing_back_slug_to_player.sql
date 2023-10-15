@@ -1,0 +1,4 @@
+ALTER TABLE player
+    ADD slug VARCHAR(255);
+
+CREATE UNIQUE INDEX idx_388bf4467b12254d91ebc696e ON player (slug);

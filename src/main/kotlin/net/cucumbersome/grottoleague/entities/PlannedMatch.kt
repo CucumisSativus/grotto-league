@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
+@Table(indexes = [Index(columnList = "player1_id, player2_id", unique = true)])
 class PlannedMatch (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
