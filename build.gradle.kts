@@ -32,10 +32,16 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     implementation("com.github.slugify:slugify:3.0.6")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "mockito-core")
+    }
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("com.h2database:h2")
+    testImplementation("org.assertj:assertj-core:3.24.2")
 }
 
 tasks.withType<KotlinCompile> {

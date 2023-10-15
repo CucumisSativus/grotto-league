@@ -1,16 +1,31 @@
-CREATE TABLE flyway_schema_history
+CREATE SEQUENCE IF NOT EXISTS match_seq START WITH 1 INCREMENT BY 50;
+
+CREATE SEQUENCE IF NOT EXISTS player_seq START WITH 1 INCREMENT BY 50;
+
+CREATE TABLE match
 (
-    installed_rank INTEGER                                   NOT NULL,
-    version        VARCHAR(50),
-    description    VARCHAR(200)                              NOT NULL,
-    type           VARCHAR(20)                               NOT NULL,
-    script         VARCHAR(1000)                             NOT NULL,
-    checksum       INTEGER,
-    installed_by   VARCHAR(100)                              NOT NULL,
-    installed_on   TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-    execution_time INTEGER                                   NOT NULL,
-    success        BOOLEAN                                   NOT NULL,
-    CONSTRAINT flyway_schema_history_pk PRIMARY KEY (installed_rank)
+    id            BIGINT  NOT NULL,
+    happened_at   TIMESTAMP WITHOUT TIME ZONE,
+    player1_id    BIGINT,
+    player1army   VARCHAR(255),
+    player1points INTEGER NOT NULL,
+    player2_id    BIGINT,
+    player2army   VARCHAR(255),
+    player2points INTEGER NOT NULL,
+    CONSTRAINT pk_match PRIMARY KEY (id)
 );
 
-CREATE INDEX flyway_schema_history_s_idx ON flyway_schema_history (success);
+CREATE TABLE player
+(
+    id       BIGINT NOT NULL,
+    name     VARCHAR(255),
+    added_at TIMESTAMP WITHOUT TIME ZONE,
+    slug     VARCHAR(255),
+    CONSTRAINT pk_player PRIMARY KEY (id)
+);
+
+ALTER TABLE match
+    ADD CONSTRAINT FK_MATCH_ON_PLAYER1 FOREIGN KEY (player1_id) REFERENCES player (id);
+
+ALTER TABLE match
+    ADD CONSTRAINT FK_MATCH_ON_PLAYER2 FOREIGN KEY (player2_id) REFERENCES player (id);
