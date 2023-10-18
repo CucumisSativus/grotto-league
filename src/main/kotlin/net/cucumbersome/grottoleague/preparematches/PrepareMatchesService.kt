@@ -4,22 +4,22 @@ import net.cucumbersome.grottoleague.entities.PlannedMatch
 import net.cucumbersome.grottoleague.entities.Player
 import net.cucumbersome.grottoleague.repositories.PlannedMatchRepository
 import net.cucumbersome.grottoleague.repositories.PlayerRepository
+import java.lang.IllegalStateException
 
 class PrepareMatchesService(
     val playerRepository: PlayerRepository,
     val plannedMatchRepository: PlannedMatchRepository
 ) {
-    fun planMatchesFromString(playerString: String) {
-        val playerNames = playerString.split("\n").filter { it.isNotBlank() }
-
+    fun planMatchesFromLines(playerNames: List<String>) {
         if(playerNames.isEmpty()) {
             throw IllegalArgumentException("No players provided")
         }
-        if(playerNames.size != playerNames.toSet().size) {
+        val uniquePlayerNames = playerNames.toSet()
+        if(playerNames.size != uniquePlayerNames.size) {
             throw IllegalArgumentException("Duplicate player names provided")
         }
 
-        val players = getAllPlayersAndInitializeIfNeeded(playerNames)
+        val players = getAllPlayersAndInitializeIfNeeded(uniquePlayerNames)
         val currentMatches = plannedMatchRepository.findAll().toList()
 
         val matches = eachAgainstOther(players)
@@ -49,9 +49,15 @@ class PrepareMatchesService(
             }
         }
 
-    private fun getAllPlayersAndInitializeIfNeeded(playerNames: List<String>): List<Player> {
-        val existingPlayers = playerRepository.findAllByNameIn(playerNames).toList()
+    private fun getAllPlayersAndInitializeIfNeeded(playerNames: Set<String>): List<Player> {
+        val existingPlayers = playerRepository.findAll().toList()
         val existingNames = existingPlayers.map { it.name }.toSet()
+
+        val namesThatExistInTheDatabaseButNotProvided = existingNames.filter { !playerNames.contains(it) }
+        if(namesThatExistInTheDatabaseButNotProvided.isNotEmpty()) {
+            throw IllegalStateException("Player names that exist in the database but not provided: $namesThatExistInTheDatabaseButNotProvided")
+        }
+
         val newNames = playerNames.filter { !existingNames.contains(it) }
         val newPlayers = newNames.map { Player(name = it) }
         playerRepository.saveAll(newPlayers)
@@ -61,8 +67,8 @@ class PrepareMatchesService(
     }
 
     private fun plannedMatchBetween(player1: Player, player2: Player, plannedMatch: PlannedMatch): Boolean {
-        return (plannedMatch.player1 == player1 && plannedMatch.player2 == player2) ||
-                (plannedMatch.player1 == player2 && plannedMatch.player2 == player1)
+        return (plannedMatch.player1.name == player1.name && plannedMatch.player2.name == player2.name) ||
+                (plannedMatch.player1.name == player2.name && plannedMatch.player2.name == player1.name)
     }
 
     companion object {
