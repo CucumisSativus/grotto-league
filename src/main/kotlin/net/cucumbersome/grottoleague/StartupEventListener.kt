@@ -13,9 +13,14 @@ class StartupEventListener(val prepareMatchesService: PrepareMatchesService, val
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
         logger.info("Starting up, reading players from ${prepareMatchesConfiguration.playersFilePath}")
         val playerFile = File(prepareMatchesConfiguration.playersFilePath)
-        playerFile.useLines {
-            prepareMatchesService.planMatchesFromLines(it.filter { it.isNotBlank() }.toList())
+        if(playerFile.exists()) {
+            playerFile.useLines {
+                prepareMatchesService.planMatchesFromLines(it.filter { it.isNotBlank() }.toList())
+            }
+        } else {
+            logger.warn("No players file found at ${prepareMatchesConfiguration.playersFilePath}")
         }
+
 
     }
 
