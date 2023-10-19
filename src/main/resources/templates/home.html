@@ -4,5 +4,22 @@
     </head>
     <body>
         <h1>Home</h1>
+
+        <div th:if="${not #lists.isEmpty(matches)}">
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Player 1</th>
+                    <th>Player 2</th>
+                    <th>Winner</th>
+                </tr>
+                <tr th:each="s : ${matches}">
+                    <td th:text="${s.presentHappenedAt} ?: 'To be played'"></td>
+                    <td th:text="${s.player1.name}"></td>
+                    <td th:text="${s.player2.name}"></td>
+                    <td th:text="${s.winner()?.name} ?: '' "></td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>

@@ -1,8 +1,6 @@
 package net.cucumbersome.grottoleague.preparematches
 
-import net.cucumbersome.grottoleague.entities.PlannedMatch
 import net.cucumbersome.grottoleague.entities.Player
-import net.cucumbersome.grottoleague.repositories.PlannedMatchRepository
 import net.cucumbersome.grottoleague.repositories.PlayerRepository
 import java.lang.IllegalStateException
 

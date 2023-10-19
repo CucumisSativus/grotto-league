@@ -1,6 +1,5 @@
-package net.cucumbersome.grottoleague.repositories
+package net.cucumbersome.grottoleague.preparematches
 
-import net.cucumbersome.grottoleague.entities.PlannedMatch
 import org.springframework.data.repository.CrudRepository
 
 interface PlannedMatchRepository: CrudRepository<PlannedMatch, Long> {

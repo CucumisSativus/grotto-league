@@ -11,6 +11,6 @@ class Player(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var id: Long? = null,
     @Column(unique = true) var name: String,
     var addedAt: LocalDateTime = LocalDateTime.now(),
-    var slug: String? = slugify.slugify(name)
+    var slug: String = slugify.slugify(name)
 )
 

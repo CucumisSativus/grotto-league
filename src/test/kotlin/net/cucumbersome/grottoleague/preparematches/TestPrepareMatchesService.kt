@@ -1,6 +1,5 @@
 package net.cucumbersome.grottoleague.preparematches
 
-import net.cucumbersome.grottoleague.repositories.PlannedMatchRepository
 import net.cucumbersome.grottoleague.repositories.PlayerRepository
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test

@@ -1,6 +1,7 @@
-package net.cucumbersome.grottoleague.entities
+package net.cucumbersome.grottoleague.preparematches
 
 import jakarta.persistence.*
+import net.cucumbersome.grottoleague.entities.Player
 import java.time.LocalDateTime
 
 @Entity
@@ -13,5 +14,4 @@ class PlannedMatch (
 
     @ManyToOne var player1: Player,
     @ManyToOne var player2: Player,
-    var happenedAt: LocalDateTime? = null
 )
