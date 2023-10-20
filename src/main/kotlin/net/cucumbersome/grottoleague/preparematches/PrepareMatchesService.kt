@@ -1,5 +1,8 @@
 package net.cucumbersome.grottoleague.preparematches
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import net.cucumbersome.grottoleague.entities.Army
 import net.cucumbersome.grottoleague.entities.Player
 import net.cucumbersome.grottoleague.repositories.PlayerRepository
 import java.lang.IllegalStateException
@@ -8,16 +11,16 @@ class PrepareMatchesService(
     val playerRepository: PlayerRepository,
     val plannedMatchRepository: PlannedMatchRepository
 ) {
-    fun planMatchesFromLines(playerNames: List<String>) {
-        if(playerNames.isEmpty()) {
+    fun planMatchesFromLines(playerToBeCreated: List<PlayerToBeCreated>) {
+        if(playerToBeCreated.isEmpty()) {
             throw IllegalArgumentException("No players provided")
         }
-        val uniquePlayerNames = playerNames.toSet()
-        if(playerNames.size != uniquePlayerNames.size) {
+        val uniquePlayerNames = playerToBeCreated.map{it.name}.toSet()
+        if(playerToBeCreated.size != uniquePlayerNames.size) {
             throw IllegalArgumentException("Duplicate player names provided")
         }
 
-        val players = getAllPlayersAndInitializeIfNeeded(uniquePlayerNames)
+        val players = getAllPlayersAndInitializeIfNeeded(playerToBeCreated)
         val currentMatches = plannedMatchRepository.findAll().toList()
 
         val matches = eachAgainstOther(players)
@@ -47,7 +50,8 @@ class PrepareMatchesService(
             }
         }
 
-    private fun getAllPlayersAndInitializeIfNeeded(playerNames: Set<String>): List<Player> {
+    private fun getAllPlayersAndInitializeIfNeeded(playersToBeCreated: List<PlayerToBeCreated>): List<Player> {
+        val playerNames = playersToBeCreated.map { it.name }.toSet()
         val existingPlayers = playerRepository.findAll().toList()
         val existingNames = existingPlayers.map { it.name }.toSet()
 
@@ -56,8 +60,9 @@ class PrepareMatchesService(
             throw IllegalStateException("Player names that exist in the database but not provided: $namesThatExistInTheDatabaseButNotProvided")
         }
 
-        val newNames = playerNames.filter { !existingNames.contains(it) }
-        val newPlayers = newNames.map { Player(name = it) }
+        val newPlayers = playersToBeCreated
+            .filter { !existingNames.contains(it.name) }
+            .map { Player(name = it.name, army = Army.valueOf(it.army)) }
         playerRepository.saveAll(newPlayers)
         val players = newPlayers + existingPlayers
         logger.info("Player count: ${players.size}, new: ${newPlayers.size}, existing: ${existingPlayers.size}")
@@ -71,5 +76,14 @@ class PrepareMatchesService(
 
     companion object {
         private val logger = org.slf4j.LoggerFactory.getLogger(PrepareMatchesService::class.java)
+        val mapper = jacksonObjectMapper()
+
+        data class PlayerToBeCreated(val name: String, val army: String) {
+            companion object {
+                fun listFromString(input: String): List<PlayerToBeCreated> {
+                    return mapper.readValue<List<PlayerToBeCreated>>(input)
+                }
+            }
+        }
     }
 }

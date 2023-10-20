@@ -8,15 +8,18 @@ import org.springframework.stereotype.Component
 import java.io.File
 
 @Component
-class StartupEventListener(val prepareMatchesService: PrepareMatchesService, val prepareMatchesConfiguration: MatchesConfiguration):  ApplicationListener<ContextRefreshedEvent>{
+class StartupEventListener(
+    val prepareMatchesService: PrepareMatchesService,
+    val prepareMatchesConfiguration: MatchesConfiguration
+) : ApplicationListener<ContextRefreshedEvent> {
 
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
         logger.info("Starting up, reading players from ${prepareMatchesConfiguration.playersFilePath}")
         val playerFile = File(prepareMatchesConfiguration.playersFilePath)
-        if(playerFile.exists()) {
-            playerFile.useLines {
-                prepareMatchesService.planMatchesFromLines(it.filter { it.isNotBlank() }.toList())
-            }
+        if (playerFile.exists()) {
+            val input = playerFile.readText()
+            val players = PrepareMatchesService.Companion.PlayerToBeCreated.listFromString(input)
+            prepareMatchesService.planMatchesFromLines(players)
         } else {
             logger.warn("No players file found at ${prepareMatchesConfiguration.playersFilePath}")
         }

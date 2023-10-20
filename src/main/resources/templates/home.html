@@ -15,8 +15,8 @@
                 </tr>
                 <tr th:each="s : ${matches}">
                     <td th:text="${s.presentHappenedAt} ?: 'To be played'"></td>
-                    <td th:text="${s.player1.name}"></td>
-                    <td th:text="${s.player2.name}"></td>
+                    <td th:text="${s.player1.name + ' ' + s.player1.army}"></td>
+                    <td th:text="${s.player2.name + ' ' + s.player2.army}"></td>
                     <td th:text="${s.winner()?.name} ?: '' "></td>
                 </tr>
             </table>
