@@ -1,4 +1,4 @@
-package net.cucumbersome.grottoleague.entities
+package net.cucumbersome.grottoleague.player
 
 enum class Army(val displayName: String) {
     SPACE_MARINES("Space Marines"),

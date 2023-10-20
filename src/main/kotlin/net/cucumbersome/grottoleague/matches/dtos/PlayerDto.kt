@@ -1,7 +1,6 @@
 package net.cucumbersome.grottoleague.matches.dtos
 
-import jakarta.persistence.*
-import net.cucumbersome.grottoleague.entities.Player
+import net.cucumbersome.grottoleague.player.Player
 import java.io.Serializable
 
 /**

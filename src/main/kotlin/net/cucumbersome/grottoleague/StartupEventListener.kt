@@ -1,7 +1,7 @@
 package net.cucumbersome.grottoleague
 
-import net.cucumbersome.grottoleague.preparematches.MatchesConfiguration
-import net.cucumbersome.grottoleague.preparematches.PrepareMatchesService
+import net.cucumbersome.grottoleague.matches.preparematches.MatchesConfiguration
+import net.cucumbersome.grottoleague.matches.preparematches.PrepareMatchesService
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component

@@ -1,9 +1,11 @@
-package net.cucumbersome.grottoleague.matches
+package net.cucumbersome.grottoleague.matches.getallmatches
 
+import net.cucumbersome.grottoleague.matches.Match
+import net.cucumbersome.grottoleague.matches.MatchRepository
 import net.cucumbersome.grottoleague.matches.dtos.MatchDto
 import net.cucumbersome.grottoleague.matches.dtos.PlayerDto
-import net.cucumbersome.grottoleague.preparematches.PlannedMatch
-import net.cucumbersome.grottoleague.preparematches.PlannedMatchRepository
+import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatch
+import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatchRepository
 
 class GetAllMatchesService(val plannedMatchRepository: PlannedMatchRepository, val matchRepository: MatchRepository) {
     fun getAllMatches(): List<MatchDto> {

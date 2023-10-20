@@ -1,4 +1,4 @@
-package net.cucumbersome.grottoleague.entities
+package net.cucumbersome.grottoleague.player
 
 import com.github.slugify.Slugify
 import jakarta.persistence.*

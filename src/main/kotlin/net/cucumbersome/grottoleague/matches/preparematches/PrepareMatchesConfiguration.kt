@@ -1,6 +1,6 @@
-package net.cucumbersome.grottoleague.preparematches
+package net.cucumbersome.grottoleague.matches.preparematches
 
-import net.cucumbersome.grottoleague.repositories.PlayerRepository
+import net.cucumbersome.grottoleague.player.PlayerRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

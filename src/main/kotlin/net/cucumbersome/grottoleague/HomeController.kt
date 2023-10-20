@@ -1,6 +1,6 @@
 package net.cucumbersome.grottoleague
 
-import net.cucumbersome.grottoleague.matches.GetAllMatchesService
+import net.cucumbersome.grottoleague.matches.getallmatches.GetAllMatchesService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set

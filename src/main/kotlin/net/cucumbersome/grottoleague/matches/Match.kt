@@ -1,8 +1,7 @@
 package net.cucumbersome.grottoleague.matches
 
 import jakarta.persistence.*
-import net.cucumbersome.grottoleague.entities.Army
-import net.cucumbersome.grottoleague.entities.Player
+import net.cucumbersome.grottoleague.player.Player
 import java.time.LocalDateTime
 
 @Entity

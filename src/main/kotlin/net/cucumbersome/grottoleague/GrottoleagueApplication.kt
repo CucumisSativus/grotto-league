@@ -1,6 +1,6 @@
 package net.cucumbersome.grottoleague
 
-import net.cucumbersome.grottoleague.preparematches.MatchesConfiguration
+import net.cucumbersome.grottoleague.matches.preparematches.MatchesConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication

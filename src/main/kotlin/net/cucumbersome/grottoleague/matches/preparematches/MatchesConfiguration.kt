@@ -1,4 +1,4 @@
-package net.cucumbersome.grottoleague.preparematches
+package net.cucumbersome.grottoleague.matches.preparematches
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

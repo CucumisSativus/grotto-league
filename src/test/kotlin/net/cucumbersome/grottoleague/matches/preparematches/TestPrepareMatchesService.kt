@@ -1,12 +1,14 @@
-package net.cucumbersome.grottoleague.preparematches
+package net.cucumbersome.grottoleague.matches.preparematches
 
-import net.cucumbersome.grottoleague.entities.Army
-import net.cucumbersome.grottoleague.repositories.PlayerRepository
+import net.cucumbersome.grottoleague.player.Army
+import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatchRepository
+import net.cucumbersome.grottoleague.matches.preparematches.PrepareMatchesService
+import net.cucumbersome.grottoleague.player.PlayerRepository
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import net.cucumbersome.grottoleague.preparematches.PrepareMatchesService.Companion.PlayerToBeCreated
+import net.cucumbersome.grottoleague.matches.preparematches.PrepareMatchesService.Companion.PlayerToBeCreated
 
 @DataJpaTest
 class TestPrepareMatchesService {

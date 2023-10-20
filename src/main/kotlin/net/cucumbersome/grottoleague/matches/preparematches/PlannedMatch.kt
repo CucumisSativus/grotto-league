@@ -1,8 +1,7 @@
-package net.cucumbersome.grottoleague.preparematches
+package net.cucumbersome.grottoleague.matches.preparematches
 
 import jakarta.persistence.*
-import net.cucumbersome.grottoleague.entities.Player
-import java.time.LocalDateTime
+import net.cucumbersome.grottoleague.player.Player
 
 @Entity
 @Table(indexes = [Index(columnList = "player1_id, player2_id", unique = true)])
