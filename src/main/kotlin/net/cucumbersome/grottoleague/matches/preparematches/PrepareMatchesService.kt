@@ -5,7 +5,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import net.cucumbersome.grottoleague.player.Army
 import net.cucumbersome.grottoleague.player.Player
 import net.cucumbersome.grottoleague.player.PlayerRepository
-import java.lang.IllegalStateException
 
 class PrepareMatchesService(
     val playerRepository: PlayerRepository,
