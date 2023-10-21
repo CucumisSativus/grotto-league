@@ -1,14 +1,14 @@
 package net.cucumbersome.grottoleague.matches.dtos
 
 import java.io.Serializable
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
  * DTO for {@link net.cucumbersome.grottoleague.matches.Match}
  */
 data class MatchDto(
-    val happenedAt: LocalDateTime? = null,
+    val happenedOn: LocalDate? = null,
     val player1: PlayerDto,
     val player1Points: Int? = null,
     val player2: PlayerDto,
@@ -26,7 +26,7 @@ data class MatchDto(
         }
     }
 
-    fun presentHappenedAt(): String? {
-        return happenedAt?.format(DateTimeFormatter.ISO_DATE)
+    fun presentHappenedOn(): String? {
+        return happenedOn?.format(DateTimeFormatter.ISO_DATE)
     }
 }

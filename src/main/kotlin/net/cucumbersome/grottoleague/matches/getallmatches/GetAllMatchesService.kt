@@ -10,13 +10,13 @@ import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatchReposito
 class GetAllMatchesService(val plannedMatchRepository: PlannedMatchRepository, val matchRepository: MatchRepository) {
     fun getAllMatches(): List<MatchDto> {
         val plannedMatches = plannedMatchRepository.findAll().map { plannedMatcheToMatchDto(it) }
-        val matches = matchRepository.findAllByOrderByHappenedAtDesc().map { matchToMatchDto(it) }
+        val matches = matchRepository.findAllByOrderByHappenedOnDesc().map { matchToMatchDto(it) }
         return matches + plannedMatches
     }
 
     private fun plannedMatcheToMatchDto(plannedMatches: PlannedMatch): MatchDto {
         return MatchDto(
-            happenedAt = null,
+            happenedOn = null,
             player1 = PlayerDto.fromPlayer(plannedMatches.player1),
             player1Points = null,
             player2 = PlayerDto.fromPlayer(plannedMatches.player2),
@@ -26,7 +26,7 @@ class GetAllMatchesService(val plannedMatchRepository: PlannedMatchRepository, v
 
     private fun matchToMatchDto(match: Match): MatchDto {
         return MatchDto(
-            happenedAt = match.happenedAt,
+            happenedOn = match.happenedOn,
             player1 = PlayerDto.fromPlayer(match.player1),
             player1Points = match.player1Points,
             player2 = PlayerDto.fromPlayer(match.player2),
