@@ -2,6 +2,7 @@ package net.cucumbersome.grottoleague.matches.preparematches
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import net.cucumbersome.grottoleague.matches.SortPlayers.sortPlayers
 import net.cucumbersome.grottoleague.player.Army
 import net.cucumbersome.grottoleague.player.Player
 import net.cucumbersome.grottoleague.player.PlayerRepository
@@ -41,11 +42,7 @@ class PrepareMatchesService(
     private fun eachAgainstOther(players: List<Player>) =
         players.flatMap { player1 ->
             players.map { player2 ->
-                if (player1.name < player2.name) {
-                    Pair(player1, player2)
-                } else {
-                    Pair(player2, player1)
-                }
+                sortPlayers(player1, player2)
             }
         }
 
