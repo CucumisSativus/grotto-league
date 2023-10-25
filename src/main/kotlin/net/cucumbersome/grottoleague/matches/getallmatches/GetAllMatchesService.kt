@@ -6,7 +6,9 @@ import net.cucumbersome.grottoleague.matches.dtos.MatchDto
 import net.cucumbersome.grottoleague.matches.dtos.PlayerDto
 import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatch
 import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatchRepository
+import org.springframework.stereotype.Service
 
+@Service
 class GetAllMatchesService(val plannedMatchRepository: PlannedMatchRepository, val matchRepository: MatchRepository) {
     fun getAllMatches(): List<MatchDto> {
         val plannedMatches = plannedMatchRepository.findAll().map { plannedMatcheToMatchDto(it) }

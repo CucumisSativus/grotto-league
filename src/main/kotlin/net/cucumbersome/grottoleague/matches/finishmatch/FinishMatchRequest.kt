@@ -1,11 +1,12 @@
 package net.cucumbersome.grottoleague.matches.finishmatch
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class FinishMatchRequest(
-    val happenedAt: LocalDate,
-    val player1Name: String,
-    val player2Name: String,
-    val player1Points: Int,
-    val player2Points: Int
+    @JsonProperty("happenedAt") val happenedAt: LocalDate,
+    @JsonProperty("player1Name") val player1Name: String,
+    @JsonProperty("player2Name") val player2Name: String,
+    @JsonProperty("player1Points") val player1Points: Int,
+    @JsonProperty("player2Points") val player2Points: Int
 )

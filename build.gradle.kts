@@ -34,6 +34,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     implementation("com.github.slugify:slugify:3.0.6")
+    implementation("org.zalando:logbook-spring-boot-starter:3.5.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
