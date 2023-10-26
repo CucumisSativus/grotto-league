@@ -14,13 +14,6 @@ class FinishMatchController(val finishMatchService: FinishMatchService) {
         finishMatchService.finishMatch(finishMatchRequest)
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    fun handle(e: HttpMessageNotReadableException) {
-        log.warn("Returning HTTP 400 Bad Request", e)
-        throw e
-    }
-
     companion object {
         private val log = org.slf4j.LoggerFactory.getLogger(FinishMatchController::class.java)
     }

@@ -30,5 +30,10 @@ class FinishMatchService(val plannedMatchRepository: PlannedMatchRepository, val
             player2Points = finishMatchRequest.player2Points
         )
         matchRepository.save(match)
+        logger.info("Match finished: {}", match)
+    }
+
+    companion object {
+        private val logger = org.slf4j.LoggerFactory.getLogger(FinishMatchService::class.java)
     }
 }

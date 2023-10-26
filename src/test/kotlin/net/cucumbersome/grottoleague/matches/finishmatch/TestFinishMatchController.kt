@@ -11,33 +11,25 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.http.HttpStatusCode
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode
 import java.net.URI
+import java.util.*
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TestFinishMatchController(@Autowired val restTemplate: TestRestTemplate) {
-    @Autowired
-    lateinit var plannedMatchRepository: PlannedMatchRepository
-
-    @Autowired
-    lateinit var matchRepository: MatchRepository
-
-    @Autowired
-    lateinit var playerRepository: PlayerRepository
-
-
-    fun prepareMatchesService() = PrepareMatchesService(playerRepository, plannedMatchRepository)
+class TestFinishMatchController(
+    @Autowired val restTemplate: TestRestTemplate,
+    @Autowired val plannedMatchRepository: PlannedMatchRepository,
+    @Autowired val matchRepository: MatchRepository,
+    @Autowired val playerRepository: PlayerRepository,
+    @Autowired val prepareMatchesService: PrepareMatchesService
+) {
 
     val player1Name = "Player 1"
     val player2Name = "Player 2"
@@ -51,7 +43,7 @@ class TestFinishMatchController(@Autowired val restTemplate: TestRestTemplate) {
     }
     @Test
     fun `it finds a planned match, creates a match and marks planned match as finished`() {
-        prepareMatchesService().planMatchesFromLines(
+        prepareMatchesService.planMatchesFromLines(
             listOf(
                 PrepareMatchesService.Companion.PlayerToBeCreated(player1Name, Army.ADEPTA_SORORITAS.name),
                 PrepareMatchesService.Companion.PlayerToBeCreated(player2Name, Army.CHAOS_DAEMONS.name),
@@ -65,18 +57,24 @@ class TestFinishMatchController(@Autowired val restTemplate: TestRestTemplate) {
                 .put("player2Name", player2Name)
                 .put("player1Points", 21)
                 .put("player2Points", 37)
-        val nodeAsString = mapper.writeValueAsString(node)
+
+        val authStr = "user:password"
+        val base64Creds: String = Base64.getEncoder().encodeToString(authStr.toByteArray())
+
+
+        val headers = HttpHeaders()
+        headers.add("Authorization", "Basic $base64Creds")
 
         val resp = restTemplate.exchange(
             URI("/api/matches/finish/"),
             HttpMethod.PUT,
-            HttpEntity(node),
+            HttpEntity(node, headers),
             String::class.java
         )
-        assertThat(resp.statusCode).isEqualTo(status().isOk)
+        assertThat(resp.statusCode).isEqualTo(HttpStatusCode.valueOf(200))
 
 
-        val plannedMatch = plannedMatchRepository.findByPlayerNames(player1Name, player1Name)
+        val plannedMatch = plannedMatchRepository.findAll().first()
         assertThat(plannedMatch).isNotNull
         assertThat(plannedMatch!!.playedOn).isEqualTo("2021-01-01")
 

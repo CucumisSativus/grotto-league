@@ -1,3 +1,4 @@
-PUT localhost:8080/api/matches/finish
+PUT localhost:8080/api/matches/finish/
+Authorization: Basic user password
 
 {"happenedAt":"2021-01-01","player1Name":"Player 1","player2Name":"Player 2","player1Points":21,"player2Points":37}
