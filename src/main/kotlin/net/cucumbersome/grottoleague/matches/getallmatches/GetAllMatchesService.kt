@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class GetAllMatchesService(val plannedMatchRepository: PlannedMatchRepository, val matchRepository: MatchRepository) {
     fun getAllMatches(): List<MatchDto> {
-        val plannedMatches = plannedMatchRepository.findAll().map { plannedMatcheToMatchDto(it) }
+        val plannedMatches = plannedMatchRepository.allNotPlayed().map { plannedMatcheToMatchDto(it) }
         val matches = matchRepository.findAllByOrderByHappenedOnDesc().map { matchToMatchDto(it) }
         return matches + plannedMatches
     }

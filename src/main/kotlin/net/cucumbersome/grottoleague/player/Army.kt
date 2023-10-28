@@ -12,6 +12,7 @@ enum class Army(val displayName: String) {
     WHITE_SCARS("White Scars"),
     RAVEN_GUARD("Raven Guard"),
     DEATHWATCH("Deathwatch"),
+    ELDAR("Eldar"),
     GREY_KNIGHTS("Grey Knights"),
     ASTRA_MILITARUM("Astra Militarum"),
     ADEPTA_SORORITAS("Adepta Sororitas"),
