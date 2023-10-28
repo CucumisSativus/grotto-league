@@ -1,25 +1,25 @@
 package net.cucumbersome.grottoleague.matches.ranking
 
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.every
 import net.cucumbersome.grottoleague.matches.Match
 import net.cucumbersome.grottoleague.matches.MatchRepository
 import net.cucumbersome.grottoleague.matches.dtos.PlayerDto
 import net.cucumbersome.grottoleague.player.Army
 import net.cucumbersome.grottoleague.player.Player
 import net.cucumbersome.grottoleague.player.PlayerRepository
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
-import org.assertj.core.api.Assertions.*
 
-@DataJpaTest
+@SpringBootTest
 class TestPrepareRankingService {
 
-    @Autowired
+    @MockkBean
     lateinit var playerRepository: PlayerRepository
 
-    @Autowired
+    @MockkBean
     lateinit var matchRepository: MatchRepository
 
     val player1Name = "player1"
@@ -44,13 +44,8 @@ class TestPrepareRankingService {
             player4,
             player5
         )
-        playerRepository.saveAll(players)
 
-        // player 3 2 wins
-        // player 2 1 win 1 lose
-        // player 1 1 lose
-        // player 4 1 lose
-        // player 5 no matches
+        every { playerRepository.findAll() } returns players
 
         val matches = listOf(
             Match(
@@ -75,8 +70,7 @@ class TestPrepareRankingService {
                 player2Points = 22
             )
         )
-
-        matchRepository.saveAll(matches)
+        every { matchRepository.findAll() } returns matches
 
         val ranking = service.getRanking()
 
