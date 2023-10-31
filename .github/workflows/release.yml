@@ -9,6 +9,7 @@ on: # yamllint disable-line rule:true
 
 jobs:
   build-native-image:
+    permissions: write-all
     name: SpringBoot Native Application on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:

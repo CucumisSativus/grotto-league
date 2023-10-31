@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
     id("org.springframework.boot") version "3.1.4"
@@ -63,4 +64,12 @@ allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
     annotation("jakarta.persistence.MappedSuperclass")
+}
+
+tasks.named<BootBuildImage>("bootBuildImage") {
+    docker {
+        builderRegistry {
+            imageName = "stopyswietegohomobonusa/grottoleague"
+        }
+    }
 }
