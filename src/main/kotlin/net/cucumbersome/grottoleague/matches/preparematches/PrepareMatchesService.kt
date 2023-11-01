@@ -6,6 +6,7 @@ import net.cucumbersome.grottoleague.matches.SortPlayers.sortPlayers
 import net.cucumbersome.grottoleague.player.Army
 import net.cucumbersome.grottoleague.player.Player
 import net.cucumbersome.grottoleague.player.PlayerRepository
+import java.io.Serializable
 
 class PrepareMatchesService(
     val playerRepository: PlayerRepository,
@@ -74,7 +75,7 @@ class PrepareMatchesService(
         private val logger = org.slf4j.LoggerFactory.getLogger(PrepareMatchesService::class.java)
         val mapper = jacksonObjectMapper()
 
-        data class PlayerToBeCreated(val name: String, val army: String) {
+        data class PlayerToBeCreated(val name: String, val army: String) : Serializable{
             companion object {
                 fun listFromString(input: String): List<PlayerToBeCreated> {
                     return mapper.readValue<List<PlayerToBeCreated>>(input)

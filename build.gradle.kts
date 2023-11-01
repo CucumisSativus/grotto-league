@@ -4,7 +4,6 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 plugins {
     id("org.springframework.boot") version "3.1.4"
     id("io.spring.dependency-management") version "1.1.3"
-    id("org.graalvm.buildtools.native") version "0.9.27"
 
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
@@ -67,6 +66,7 @@ allOpen {
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
+    builder = "dashaun/builder:tiny"
     docker {
         builderRegistry {
             imageName = "stopyswietegohomobonusa/grottoleague"

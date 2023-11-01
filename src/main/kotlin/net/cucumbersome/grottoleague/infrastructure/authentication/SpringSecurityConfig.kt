@@ -33,7 +33,7 @@ class SpringSecurityConfig(private val authenticationConfiguration: Authenticati
     fun userDetailsService(): UserDetailsService {
         val user: UserDetails = User.builder()
             .username("user")
-            .password(passwordEncoder().encode("password"))
+            .password(passwordEncoder().encode(authenticationConfiguration.apiKey))
             .build()
         return InMemoryUserDetailsManager(user)
     }
