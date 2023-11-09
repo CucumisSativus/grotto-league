@@ -27,28 +27,6 @@
                     <h1 class="display-5 fw-bold">League Winter 2023/2024</h1>
                 </div>
                 <div class="row">
-                    <h2>Ranking</h2>
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Player</th>
-                                <th>Wins</th>
-                                <th>Losses</th>
-                                <th>Points</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="ranking : ${ranking}">
-                                <td th:text="${ranking.player.name}"></td>
-                                <td th:text="${ranking.wins}"></td>
-                                <td th:text="${ranking.loses}"></td>
-                                <td th:text="${ranking.totalPoints}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
 
                     <h3>Matches</h3>
                     <div class="table-responsive-sm">
@@ -59,11 +37,11 @@
                                 <th>Player 2</th>
                                 <th>Winner</th>
                             </tr>
-                            <tr th:each="s : ${matches}">
-                                <td th:text="${s.presentHappenedOn} ?: 'To be played'"></td>
-                                <td th:text="${s.player1.name + ' ' + s.player1.army + ' ' + s.presentPlayer1Points()}"></td>
-                                <td th:text="${s.player2.name + ' ' + s.player2.army + ' ' + s.presentPlayer2Points()}"></td>
-                                <td th:text="${s.winner()?.name} ?: '' "></td>
+                            <tr th:each="s : ${plannedMatches}">
+                                <td th:text="${s.playedOn} ?: 'To be played'"></td>
+                                <td th:text="${s.player1.name + ' ' + s.player1.army}"></td>
+                                <td th:text="${s.player2.name + ' ' + s.player2.army}"></td>
+                                <td><a th:href="@{/match-admin/finish/{id}(id=${s.id})}">Finish</a></td>
                             </tr>
                         </table>
                     </div>

@@ -21,6 +21,7 @@ class SpringSecurityConfig(private val authenticationConfiguration: Authenticati
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeHttpRequests{
             it.requestMatchers("/api/**").authenticated()
+            it.requestMatchers("/match-admin/**").authenticated()
                 .anyRequest().permitAll()
         }
             .csrf { it.disable() }

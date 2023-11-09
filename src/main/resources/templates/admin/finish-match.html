@@ -1,0 +1,80 @@
+<html lang="en" data-bs-theme="auto">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Grotto league">
+    <title>Grotto league, season winter 2023/2024</title>
+    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css"
+          rel="stylesheet">
+
+</head>
+<body>
+<main>
+    <div class="container py-4">
+        <header class="pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+                <img src="../static/images/logo.png" alt="Grotto League Logo" th:src="@{/images/logo.png}"
+                     class="img-fluid">
+                <span class="fs-4">Grotto league</span>
+            </a>
+        </header>
+
+
+        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <div class="container-fluid py-5">
+                <div class="row">
+                    <h1 class="display-5 fw-bold" th:text="'Match ' + ${form.player1Name} + ' vs ' + ${form.player2Name}"></h1>
+                </div>
+                <div class="row">
+                    <form th:action="@{/match-admin/finish/{id}(id=${plannedMatch.id})}" method="post"
+                          th:object="${form}">
+                        <div class="form-group">
+                            <label for="happenedOn">Happened on</label>
+                            <input type="date" class="form-control" id="happenedOn" th:field="*{happenedAt}">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="player1Name">Player 1</label>
+                                    <input type="text" class="form-control" id="player1Name" th:field="*{player1Name}"
+                                           disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="player1Points">Player 1 points</label>
+                                    <input type="number" class="form-control" id="player1Points"
+                                           th:field="*{player1Points}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label for="player2Name">Player 2</label>
+                                    <input type="text" class="form-control" id="player2Name" th:field="*{player2Name}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="player2Points">Player 2 points</label>
+                                    <input type="number" class="form-control" id="player2Points"
+                                           th:field="*{player2Points}">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <footer class="pt-3 mt-4 text-body-secondary border-top">
+                &copy; 2023
+            </footer>
+        </div>
+</main>
+</body>
+</html>

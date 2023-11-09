@@ -29,4 +29,12 @@ data class MatchDto(
     fun presentHappenedOn(): String? {
         return happenedOn?.format(DateTimeFormatter.ISO_DATE)
     }
+
+    fun presentPlayer1Points(): String {
+        return player1Points?.toString() ?: ""
+    }
+
+    fun presentPlayer2Points(): String {
+        return player2Points?.toString() ?: ""
+    }
 }
