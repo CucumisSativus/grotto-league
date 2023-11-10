@@ -3,6 +3,7 @@ package net.cucumbersome.grottoleague.matches.admin
 import net.cucumbersome.grottoleague.matches.MatchRepository
 import net.cucumbersome.grottoleague.matches.finishmatch.FinishMatchRequest
 import net.cucumbersome.grottoleague.matches.finishmatch.FinishMatchService
+import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatch
 import net.cucumbersome.grottoleague.matches.preparematches.PlannedMatchRepository
 import net.cucumbersome.grottoleague.player.PlayerRepository
 import org.springframework.http.HttpStatus
@@ -18,8 +19,21 @@ import java.time.LocalDate
 @RequestMapping("/match-admin")
 class MatchAdminController(private val matchRepository: MatchRepository, private val playerRepository: PlayerRepository, private val plannedMatchRepository: PlannedMatchRepository, private val finishMatchService: FinishMatchService) {
     @GetMapping("/")
-    fun index(model: Model): String {
-        model["plannedMatches"] = plannedMatchRepository.findAll()
+    fun index(@RequestParam("player1Name") player1Name: String?, @RequestParam("player2Name") player2Name: String?, model: Model): String {
+        val filterForm = FilterForm(player1Name, player2Name)
+        if(player1Name != null && player2Name != null) {
+            val matche = plannedMatchRepository.findByPlayerNames(player1Name, player2Name)
+            val matches = if(matche != null) {
+                listOf(matche)
+            } else {
+                emptyList()
+            }
+            model["plannedMatches"] = matches
+        } else {
+            model["plannedMatches"] = plannedMatchRepository.findAll()
+        }
+        model["players"] = playerRepository.findAll()
+        model["form"] = filterForm
         return "admin/index"
     }
 
@@ -46,5 +60,16 @@ class MatchAdminController(private val matchRepository: MatchRepository, private
         finishMatchService.finishMatch(finishMatchRequest)
 
         return "redirect:/match-admin/"
+    }
+
+    companion object {
+        data class FilterForm(
+            val player1Name: String? = null,
+            val player2Name: String? = null,
+        ) {
+            fun filled(): Boolean {
+                return player1Name != null && player2Name != null
+            }
+        }
     }
 }

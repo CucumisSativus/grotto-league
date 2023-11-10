@@ -29,6 +29,47 @@
                 <div class="row">
 
                     <h3>Matches</h3>
+
+                    <div class="row">
+                        <form th:action="@{/match-admin/}" method="get" th:object="${form}">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <label for="player1Name" class="col-md-3 col-form-label">Player 1</label>
+                                        <div class="col-md-9">
+                                            <select th:field="*{player1Name}" class="form-select" id="player1Name">
+                                                <option th:each="player : ${players}" th:value="${player.name}"
+                                                        th:text="${player.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <label for="player2Name" class="col-md-3 col-form-label">Player 2</label>
+                                        <div class="col-md-9">
+                                            <select th:field="*{player2Name}" class="form-select" id="player2Name">
+                                                <option th:each="player : ${players}" th:value="${player.name}"
+                                                        th:text="${player.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a th:href="@{/match-admin/}" class="btn btn-danger">Clear</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
                     <div class="table-responsive-sm">
                         <table class="table">
                             <tr>
