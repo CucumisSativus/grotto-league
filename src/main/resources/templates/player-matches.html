@@ -27,30 +27,7 @@
                     <h1 class="display-5 fw-bold">League Winter 2023/2024</h1>
                 </div>
                 <div class="row">
-                    <h2>Ranking</h2>
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Player</th>
-                                <th>Wins</th>
-                                <th>Losses</th>
-                                <th>Points</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="ranking : ${ranking}">
-                                <td><a th:href="@{/players/{slug}/matches(slug=${ranking.player.slug})}" th:text="${ranking.player.name}"></a></td>
-                                <td th:text="${ranking.wins}"></td>
-                                <td th:text="${ranking.loses}"></td>
-                                <td th:text="${ranking.totalPoints}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3>Matches</h3>
+                    <h3 th:text="'Matches for player ' + ${player.name}"></h3>
                     <div class="table-responsive-sm">
                         <table class="table">
                             <tr>

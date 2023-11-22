@@ -16,6 +16,12 @@ class GetAllMatchesService(val plannedMatchRepository: PlannedMatchRepository, v
         return matches + plannedMatches
     }
 
+    fun getAllMatchesForPlayer(playerName: String): List<MatchDto> {
+        val plannedMatches = plannedMatchRepository.allNotPlayedForPlayer(playerName).map { plannedMatcheToMatchDto(it) }
+        val matches = matchRepository.findAllByPlayerNameOrderByHappenedOnDesc(playerName).map { matchToMatchDto(it) }
+        return matches + plannedMatches
+    }
+
     private fun plannedMatcheToMatchDto(plannedMatches: PlannedMatch): MatchDto {
         return MatchDto(
             happenedOn = null,

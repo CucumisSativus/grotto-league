@@ -3,7 +3,7 @@ package net.cucumbersome.grottoleague.matches.preparematches
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 
-interface PlannedMatchRepository: CrudRepository<PlannedMatch, Long> {
+interface PlannedMatchRepository : CrudRepository<PlannedMatch, Long> {
 
 
     @Query(
@@ -19,4 +19,11 @@ where (p.player1.name = ?1 and p.player2.name = ?2) or (p.player2.name = ?1 and 
     @Query("select p from PlannedMatch p where p.playedOn is null")
     fun allNotPlayed(): List<PlannedMatch>
 
+    @Query(
+        """select p from PlannedMatch p
+where (p.player1.name = ?1 or p.player2.name = ?1) and p.playedOn is null"""
+    )
+    fun allNotPlayedForPlayer(
+        playerName: String,
+    ): List<PlannedMatch>
 }
